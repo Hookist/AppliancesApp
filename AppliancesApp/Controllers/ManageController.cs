@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AppliancesApp.Models;
+using AppliancesApp.Models.DbModels;
 
 namespace AppliancesApp.Controllers
 {
@@ -320,6 +321,20 @@ namespace AppliancesApp.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        
+        public ActionResult ControlPanel()
+        {
+            ViewBag.Title = "Панель администратора сайта";
+            return View();
+        }
+
+        [Authorize(Roles = "admin")]
+        public ActionResult SystemSettings()
+        {
+            ViewBag.appliance = new Appliance();
+            return View();
         }
 
         protected override void Dispose(bool disposing)

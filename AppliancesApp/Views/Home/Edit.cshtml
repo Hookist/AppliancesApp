@@ -1,0 +1,60 @@
+﻿@model AppliancesApp.Models.DbModels.Appliance
+<html>
+<body>
+    <div class="Column">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id, new { id = "Id" })
+            <div>
+                @Html.LabelFor(model => model.Name)
+                <p>@Html.EditorFor(model => model.Name, new { id = "Name" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Price)
+                <p>@Html.EditorFor(model => model.Price, new { id = "Price" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.CreateDate)
+                <p>@Html.EditorFor(model => model.CreateDate, new { id = "CreateDate", @class="form-control" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Description)
+                <p>@Html.EditorFor(model => model.Description, new { id = "Description" })</p>
+            </div>
+            <div>
+                <p><button>Save</button></p>
+            </div>
+        }
+    </div>
+
+</body>
+</html>
+
+<script>
+    $("button").click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/Home/UpdateAppliance",
+            data: {
+                Id: $('#Id').val(), // < note use of 'this' here
+                Name: $('#Name').val(),
+                Price: $('#Price').val(),
+                CreateDate: $('#CreateDate').val(),
+                Description: $('#Description').val()
+            },
+            success: function (result) {
+                alert('ok');
+            },
+            error: function (result) {
+                //alert('error');
+            }
+        });
+    });
+
+    $(function () {
+        $('#CreateDate').datetimepicker();
+    });
+
+</script>

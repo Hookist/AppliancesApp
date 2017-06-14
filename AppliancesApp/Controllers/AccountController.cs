@@ -392,6 +392,7 @@ namespace AppliancesApp.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
 
