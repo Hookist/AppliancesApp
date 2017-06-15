@@ -7,15 +7,15 @@ namespace AppliancesApp.Migrations
     {
         public override void Up()
         {
-            CreateTable(
-                "dbo.ApplianceRestrictions",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 50),
-                        IsHidden = c.Boolean(),
-                    })
-                .PrimaryKey(t => t.Id);
+            //CreateTable(
+            //    "dbo.ApplianceRestrictions",
+            //    c => new
+            //        {
+            //            Id = c.Int(nullable: false, identity: true),
+            //            Name = c.String(nullable: false, maxLength: 50),
+            //            IsHidden = c.Boolean(),
+            //        })
+            //    .PrimaryKey(t => t.Id);
             
             //CreateTable(
             //    "dbo.Appliances",

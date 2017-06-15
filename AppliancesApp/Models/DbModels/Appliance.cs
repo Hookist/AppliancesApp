@@ -24,7 +24,7 @@ namespace AppliancesApp.Models.DbModels
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public bool IsInStock { get; set; }
+        public bool? IsInStock { get; set; }
 
         [MaxLength(200)]
         public string Attachment { get; set; }

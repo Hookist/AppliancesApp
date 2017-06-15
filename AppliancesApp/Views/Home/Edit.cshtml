@@ -2,7 +2,7 @@
 <html>
 <body>
     <div class="Column">
-        @using (Html.BeginForm())
+        @using (Ajax.BeginForm("UpdateAppliance", new AjaxOptions { OnSuccess = "alert('succes')" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.Id, new { id = "Id" })
@@ -16,45 +16,56 @@
             </div>
             <div>
                 @Html.LabelFor(model => model.CreateDate)
-                <p>@Html.EditorFor(model => model.CreateDate, new { id = "CreateDate", @class="form-control" })</p>
+                <p>@Html.EditorFor(model => model.CreateDate, new { id = "CreateDate", @class = "form-control" })</p>
             </div>
             <div>
-                @Html.LabelFor(model => model.Description)
-                <p>@Html.EditorFor(model => model.Description, new { id = "Description" })</p>
+
+                @{ if (ViewBag.restricts[nameof(Model.Description)] != true)
+                    {
+                        @Html.LabelFor(model => model.Description)
+                        <p>@Html.EditorFor(model => model.Description, new { id = "Description" })</p>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(model => model.Description)
+                    }
+                }
             </div>
             <div>
-                <p><button>Save</button></p>
+                @{ if (ViewBag.restricts[nameof(Model.IsInStock)] != true)
+                    {
+                        @Html.LabelFor(model => model.IsInStock)
+                        <p>@Html.EditorFor(model => model.IsInStock, new { id = "IsInStock" })</p>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(model => model.IsInStock)
+                    }
+                }
             </div>
-        }
+            <div>
+                @{ if (ViewBag.restricts[nameof(Model.Attachment)] != true)
+                    {
+                        @Html.LabelFor(model => model.Attachment)
+                        <p>@Html.EditorFor(model => model.Attachment, new { id = "Attachment" })</p>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(model => model.IsInStock)
+                    }
+                }
+            </div>
+            <div>
+                <p><input value="Save" type="submit" id="saveButton" /></p>
+            </div>
+                    }
     </div>
 
 </body>
 </html>
 
 <script>
-    $("button").click(function (e) {
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "/Home/UpdateAppliance",
-            data: {
-                Id: $('#Id').val(), // < note use of 'this' here
-                Name: $('#Name').val(),
-                Price: $('#Price').val(),
-                CreateDate: $('#CreateDate').val(),
-                Description: $('#Description').val()
-            },
-            success: function (result) {
-                alert('ok');
-            },
-            error: function (result) {
-                //alert('error');
-            }
-        });
-    });
-
     $(function () {
         $('#CreateDate').datetimepicker();
     });
-
 </script>

@@ -1,27 +1,70 @@
-﻿
+﻿@model IEnumerable<AppliancesApp.Models.DbModels.ApplianceRestriction>
 @{
     ViewBag.Title = "SystemSettings";
 }
 
 <h2>SystemSettings</h2>
+<html>
+    <body>
+        <div>
+            <div>
+                <p>@nameof(ViewBag.Name)</p>
+            </div>
+            <div>
+                <p>@nameof(ViewBag.CreateDate)</p>
+            </div>
+            <div>
+                <p>@nameof(ViewBag.Price)</p>
+            </div>
+            @{ 
+                int i = 1;
+            }
+            @foreach (var item in Model)
+            {
+                <div>
+                    @Html.Hidden("Id" + i.ToString(), item.Id)
+                    <p>
+                        @item.Name
+                        @Html.Hidden("Name" + i.ToString(), item.Name)
+                        @Html.CheckBox(nameof(item.IsHidden) + i, (bool)item.IsHidden, new { Id = "IsHidden" + i })
+                    </p>
+                </div>
+                ++i;
+            }
+            <div>
+                <button> Save </button>
+            </div>
+        </div>
+    </body>
+</html>
 
-<div>
-    <div>
-        <p>@nameof(ViewBag.Name)</p>
-    </div>
-    <div>
-        <p>>@nameof(ViewBag.CreateDate)</p>
-    </div>
-    <div>
-        <p>@Html.DisplayNameFor(model => model.Price)</p>
-    </div>
-    <div>
-        <p>@Html.DisplayNameFor(model => model.Description)</p>
-    </div>
-    <div>
-        <p>@Html.DisplayNameFor(model => model.IsInStock)</p>
-    </div>
-    <div>
-        <p>@Html.DisplayNameFor(model => model.Attachment)</p>
-    </div>
-</div>
+<script>
+    $("button").click(function (e) {
+        e.preventDefault();
+        var restricts = [{ Id: $('#Id1').val(), Name: $('#Name1').val(), IsHidden: $('#IsHidden1').is(':checked') },
+            { Id: $('#Id2').val(), Name: $('#Name2').val(), IsHidden: $('#IsHidden2').is(':checked') },
+            { Id: $('#Id3').val(), Name: $('#Name3').val(), IsHidden: $('#IsHidden3').is(':checked') }];
+
+        restricts = JSON.stringify({ 'restricts': restricts });
+
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: "POST",
+            url: "/Manage/UpdateRestricts",
+            data: restricts,
+            success: function (result) {
+                alert('ok');
+            },
+            error: function (result) {
+                //alert('error');
+            }
+        });
+    });
+
+
+
+    
+
+</script>
+

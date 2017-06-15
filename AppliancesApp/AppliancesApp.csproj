@@ -198,6 +198,10 @@
     <Compile Include="Migrations\201706141515585_PostMigration.Designer.cs">
       <DependentUpon>201706141515585_PostMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706141533496_PostMigration1.cs" />
+    <Compile Include="Migrations\201706141533496_PostMigration1.Designer.cs">
+      <DependentUpon>201706141533496_PostMigration1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AppDbInitializer.cs" />
@@ -409,6 +413,13 @@
     <Content Include="Views\Manage\SystemSettings.cshtml" />
     <Content Include="Views\Home\List.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
+    <Content Include="Web.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -419,6 +430,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201706141515585_PostMigration.resx">
       <DependentUpon>201706141515585_PostMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706141533496_PostMigration1.resx">
+      <DependentUpon>201706141533496_PostMigration1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

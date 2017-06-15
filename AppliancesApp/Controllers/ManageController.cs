@@ -8,6 +8,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AppliancesApp.Models;
 using AppliancesApp.Models.DbModels;
+using System.Net;
+using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace AppliancesApp.Controllers
 {
@@ -16,6 +19,8 @@ namespace AppliancesApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        private ApplianceContext db = new ApplianceContext();
 
         public ManageController()
         {
@@ -333,8 +338,18 @@ namespace AppliancesApp.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult SystemSettings()
         {
+            var model = db.ApplianceRestrictions.ToList();
             ViewBag.appliance = new Appliance();
-            return View();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateRestricts(List<ApplianceRestriction> restricts)
+        {
+            foreach(var restrict in restricts)
+                db.Entry(restrict).State = EntityState.Modified;
+            db.SaveChanges();
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)

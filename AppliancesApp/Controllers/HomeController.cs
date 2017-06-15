@@ -21,7 +21,14 @@ namespace AppliancesApp.Controllers
         public ActionResult Edit(int id)
         {
             Appliance appl = db.Appliances.Find(id);
-            if(appl != null)
+            List<ApplianceRestriction> restrictions = db.ApplianceRestrictions.ToList();
+            Dictionary<string, bool?> dict = new Dictionary<string, bool?>();
+            foreach(var restr in restrictions)
+            {
+                dict.Add(restr.Name, restr.IsHidden);
+            }
+            ViewBag.restricts = dict;
+            if (appl != null)
             {
                 return PartialView("Edit", appl);
             }
@@ -54,14 +61,6 @@ namespace AppliancesApp.Controllers
         {
             var allAppliances = db.Appliances.ToList();
 
-            ViewBag.names = AllColumnNames(new Appliance());
-            var restriction = db.ApplianceRestrictions.Where(p => p.IsHidden == false).ToList();
-
-            //allAppliances.ForEachAsync(delegate (Appliance appl)
-            //{
-
-            //});
-         
             if (allAppliances.Count <= 0)
             {
                 return HttpNotFound();
@@ -69,20 +68,6 @@ namespace AppliancesApp.Controllers
 
             return PartialView("List", allAppliances);
         }
-
-        //void Funcy(Appliance appl, List<ApplianceRestriction> restricts)
-        //{
-        //    foreach(var res in restricts)
-        //    {
-        //        if (nameof(appl.Description) == res.Name)
-        //            appl.Description = null;
-        //        else if (nameof(appl.IsInStock) == res.Name)
-        //            appl.IsInStock = null;
-        //        else if (nameof(appl.Attachment) == res.Name)
-        //            appl.Attachment = null;
-        //    }
-            
-        //}
 
         static string[] AllColumnNames(object objectClass)
         {
@@ -100,6 +85,7 @@ namespace AppliancesApp.Controllers
         [HttpPost]
         public ActionResult UpdateAppliance(Appliance appliance)
         {
+            appliance.CreateDate = Convert.ToDateTime(appliance.CreateDate);
             db.Entry(appliance).State = EntityState.Modified;
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
