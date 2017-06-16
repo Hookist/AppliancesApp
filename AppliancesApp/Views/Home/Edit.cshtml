@@ -59,7 +59,7 @@
                     }
                 }
             </div>
-          }
+                    }
     </div>
 
 </body>
@@ -67,11 +67,11 @@
 
 <script>
 
-    function OnSave(){
-            $('#messages_about_edit').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
-            $('#messages_edit_content').html('<h4>Saved</h4>'); showList();
-            $('#messages_about_edit').slideUp(1500, function () { 
-            });
+    function OnSave() {
+        $('#messages_about_edit').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
+        $('#messages_edit_content').html('<h4>Saved</h4>'); showList();
+        $('#messages_about_edit').slideUp(1500, function () {
+        });
     }
 
     function OnFailure() {

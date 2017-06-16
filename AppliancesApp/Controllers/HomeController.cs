@@ -37,13 +37,6 @@ namespace AppliancesApp.Controllers
 
         public ActionResult About()
         {
-
-            using (ApplianceContext db = new ApplianceContext())
-            {
-                ApplianceRestriction applianceRes = new ApplianceRestriction { Name = "Description", IsHidden = true };
-                db.ApplianceRestrictions.Add(applianceRes);
-                db.SaveChanges();
-            }
             ViewBag.Message = "Your application description page.";
 
             return View();
@@ -69,19 +62,6 @@ namespace AppliancesApp.Controllers
             return PartialView("List", allAppliances);
         }
 
-        static string[] AllColumnNames(object objectClass)
-        {
-            List<string> columnNames = new List<string>();
-
-            foreach (PropertyInfo item in objectClass.GetType().GetProperties())
-            {
-                columnNames.Add(item.Name);
-            }
-            return columnNames.ToArray();
-        }
-
-
-
         [HttpPost]
         public ActionResult UpdateAppliance(Appliance appliance)
         {
@@ -90,9 +70,5 @@ namespace AppliancesApp.Controllers
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-
-
-
-
     }
 }

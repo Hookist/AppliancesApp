@@ -17,7 +17,7 @@
             </th>
 
             <th></th>
-        </tr>
+        </tr>        
 
         @foreach (var item in Model)
         {
@@ -33,7 +33,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("change", "Edit", new { id = item.Id },
-            new { @class = "viewDialog", data_dialog_title = "Редактирование техники" }) 
+            new { @class = "viewDialog", data_dialog_title = "Редактирование техники" })
                 </td>
 
             </tr>
@@ -89,8 +89,6 @@
                         },
                         "Cancel": function () {
                             $(this).remove();
-                            //$(this).dialog("close");
-
                         }
                     },
                     close: function () {
