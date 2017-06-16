@@ -15,7 +15,7 @@ namespace AppliancesApp.Models.DbModels
         [MaxLength(50), MinLength(2)]
         public string Name { get; set; }
         
-        public bool? IsHidden { get; set; }
+        public bool IsHidden { get; set; }
 
     }
 }

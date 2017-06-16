@@ -2,8 +2,13 @@
 <html>
 <body>
     <div class="Column">
-        @using (Ajax.BeginForm("UpdateAppliance", new AjaxOptions { OnSuccess = "alert('succes')" }))
+        <div id="messages_about_edit" class="hide" role="alert">
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <div id="messages_edit_content"></div>
+        </div>
+        @using (Ajax.BeginForm("UpdateAppliance", new AjaxOptions { OnSuccess = "OnSave();", OnFailure = "OnFailure()" }))
         {
+
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.Id, new { id = "Id" })
             <div>
@@ -19,8 +24,7 @@
                 <p>@Html.EditorFor(model => model.CreateDate, new { id = "CreateDate", @class = "form-control" })</p>
             </div>
             <div>
-
-                @{ if (ViewBag.restricts[nameof(Model.Description)] != true)
+                @{ if (ViewBag.restricts[nameof(Model.Description)] == true)
                     {
                         @Html.LabelFor(model => model.Description)
                         <p>@Html.EditorFor(model => model.Description, new { id = "Description" })</p>
@@ -32,7 +36,7 @@
                 }
             </div>
             <div>
-                @{ if (ViewBag.restricts[nameof(Model.IsInStock)] != true)
+                @{ if (ViewBag.restricts[nameof(Model.IsInStock)] == true)
                     {
                         @Html.LabelFor(model => model.IsInStock)
                         <p>@Html.EditorFor(model => model.IsInStock, new { id = "IsInStock" })</p>
@@ -44,28 +48,42 @@
                 }
             </div>
             <div>
-                @{ if (ViewBag.restricts[nameof(Model.Attachment)] != true)
+                @{ if (ViewBag.restricts[nameof(Model.Attachment)] == true)
                     {
                         @Html.LabelFor(model => model.Attachment)
                         <p>@Html.EditorFor(model => model.Attachment, new { id = "Attachment" })</p>
                     }
                     else
                     {
-                        @Html.HiddenFor(model => model.IsInStock)
+                        @Html.HiddenFor(model => model.Attachment)
                     }
                 }
             </div>
-            <div>
-                <p><input value="Save" type="submit" id="saveButton" /></p>
-            </div>
-                    }
+          }
     </div>
 
 </body>
 </html>
 
 <script>
+
+    function OnSave(){
+            $('#messages_about_edit').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
+            $('#messages_edit_content').html('<h4>Saved</h4>'); showList();
+            $('#messages_about_edit').slideUp(1500, function () { 
+            });
+    }
+
+    function OnFailure() {
+        $('#messages_about_edit').removeClass('hide').addClass('alert alert-info alert-dismissible').slideDown().show();
+        $('#messages_edit_content').html('<h4>Something wrong</h4>');
+        $('#messages_about_edit').slideUp(1500, function () {
+        });
+    }
+
     $(function () {
-        $('#CreateDate').datetimepicker();
+        $('#CreateDate').datetimepicker({
+            format: 'DD/MM/YYYY HH:mm:ss'
+        });
     });
 </script>

@@ -4,9 +4,6 @@
 <div id="list">
     <h2>List</h2>
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
     <table class="table">
         <tr>
             <th>
@@ -35,10 +32,8 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.ActionLink("редактировать", "Edit", new { id = item.Id },
-            new { @class = "viewDialog", data_dialog_title = "Редактирование техники" }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("change", "Edit", new { id = item.Id },
+            new { @class = "viewDialog", data_dialog_title = "Редактирование техники" }) 
                 </td>
 
             </tr>
@@ -46,10 +41,32 @@
 
     </table>
 
+    <div id="messages_about_list" class="hide" role="alert">
+        <button type="button" class="close" onclick="$('#messages_about_list').hide()"><span aria-hidden="true">&times;</span></button>
+        <div id="messages_list_content"></div>
+    </div>
+
 
 </div>
 
 <script>
+
+    function showList() {
+        $.ajax({
+            url: "/Home/GetAllAppliances",
+            type: "GET",
+            success: function (data) {
+                $("#list").html(data);
+                $('#messages_about_list').removeClass('hide').addClass('alert alert-success').slideDown().show();
+                $('#messages_list_content').html('<h4>List Updated</h4>');
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("An error has occurred making the request: " + errorThrown)
+            }
+
+        });
+    }
+
     $(document).ready(function () {
 
         $.ajaxSetup({ cache: false });
@@ -66,12 +83,20 @@
                     width: 300,
                     height: 400,
                     title: $(this).attr("data-dialog-title"),
+                    buttons: {
+                        "Save": function () {
+                            $('#form0').submit();
+                        },
+                        "Cancel": function () {
+                            $(this).remove();
+                            //$(this).dialog("close");
+
+                        }
+                    },
                     close: function () {
-                        $.get("/Home/GetAllAppliances", function (data) {
-                            $("#list").html(data);
-                            alert("Load was performed.");
-                        });
-                        $(this).remove()
+                        $('#messages_about_list').removeClass('hide').addClass('alert alert-info').slideDown().show();
+                        $('#messages_list_content').html('<h4>Edit Dialog Closed</h4>');
+                        $(this).remove();
                     },
                     modal: true
                 })

@@ -5,18 +5,13 @@
 
 <h2>SystemSettings</h2>
 
-@using (Ajax.BeginForm("UpdateRestricts", "Manage", new { }, new AjaxOptions {  OnSuccess = "alert('succes')" }, new { enctype = "multipart/form-data" }))
-{
-    for(int i = 0; i < Model.Count; i++)
-    {
-        @Html.HiddenFor(m => m[i].Id)
-        @Html.LabelFor(m => m[i].Name)
-        @Html.CheckBoxFor(m => m[i].IsHidden)
-    }
-    <input type="submit" value="Save" />
-}
+<div id="messages_info" class="hide" role="alert">
+    <button type="button" class="close" onclick="$('#messages_info').hide()"><span aria-hidden="true">&times;</span></button>
+    <div id="messages_info_content"></div>
+</div>
 
-@*<html>
+@using (Ajax.BeginForm("UpdateRestricts", "Manage", new { }, new AjaxOptions { OnSuccess = "OnSuccess();" }, new { enctype = "multipart/form-data" }))
+{
     <body>
         <div>
             <div>
@@ -28,55 +23,26 @@
             <div>
                 <p>@nameof(ViewBag.Price)</p>
             </div>
-            @{ 
-                int i = 1;
-            }
-            @foreach (var item in Model)
+            @for (int i = 0; i < Model.Count; i++)
             {
+                @Html.HiddenFor(m => m[i].Id)
+                @Html.HiddenFor(m => m[i].Name)
                 <div>
-                    @Html.Hidden("Id" + i.ToString(), item.Id)
                     <p>
-                        @item.Name
-                        @Html.Hidden("Name" + i.ToString(), item.Name)
-                        @Html.CheckBox(nameof(item.IsHidden) + i, (bool)item.IsHidden, new { Id = "IsHidden" + i })
+                        @Html.DisplayTextFor(m => m[i].Name)
+                        @Html.CheckBoxFor(m => m[i].IsHidden)
                     </p>
                 </div>
-                ++i;
             }
-            <div>
-                <button> Save </button>
-            </div>
+            <input type="submit" value="Save" />
         </div>
     </body>
-</html>*@
-
+}
 <script>
-    //$("button").click(function (e) {
-    //    e.preventDefault();
-    //    var restricts = [{ Id: $('#Id1').val(), Name: $('#Name1').val(), IsHidden: $('#IsHidden1').is(':checked') },
-    //        { Id: $('#Id2').val(), Name: $('#Name2').val(), IsHidden: $('#IsHidden2').is(':checked') },
-    //        { Id: $('#Id3').val(), Name: $('#Name3').val(), IsHidden: $('#IsHidden3').is(':checked') }];
-
-    //    restricts = JSON.stringify({ 'restricts': restricts });
-
-    //    $.ajax({
-    //        contentType: 'application/json; charset=utf-8',
-    //        dataType: 'json',
-    //        type: "POST",
-    //        url: "/Manage/UpdateRestricts",
-    //        data: restricts,
-    //        success: function (result) {
-    //            alert('ok');
-    //        },
-    //        error: function (result) {
-    //            //alert('error');
-    //        }
-    //    });
-    //});
-
-
-
-    
-
+    function OnSuccess() {
+        $('#messages_info').removeClass('hide').addClass('alert alert-success').slideDown().show();
+        $('#messages_info_content').html('<h4>System settings saved successfully </h4>');
+        $('#messages_info').slideUp(1500, function () {
+        });
+    }
 </script>
-
