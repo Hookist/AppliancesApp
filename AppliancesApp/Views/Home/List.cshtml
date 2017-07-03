@@ -3,7 +3,9 @@
 
 <div id="list">
     <h2>List</h2>
-
+    <p>
+        @Html.ActionLink("Add", "Add", null, new { @class = "viewDialog btn-primary btn-lg", type = "button", data_dialog_title = "Добавление техники" })
+    </p>
     <table class="table">
         <tr>
             <th>
@@ -17,7 +19,7 @@
             </th>
 
             <th></th>
-        </tr>        
+        </tr>
 
         @foreach (var item in Model)
         {
@@ -33,7 +35,9 @@
                 </td>
                 <td>
                     @Html.ActionLink("change", "Edit", new { id = item.Id },
-            new { @class = "viewDialog", data_dialog_title = "Редактирование техники" })
+            new { @class = "viewDialog btn-info btn-sm", data_dialog_title = "Редактирование техники" })
+                    @Html.ActionLink("delete", "Delete", new { id = item.Id },
+            new { @class = "viewDialog btn-danger btn-sm", date_dialog_title = "Удалить технику" })
                 </td>
 
             </tr>
@@ -84,7 +88,7 @@
                     height: 400,
                     title: $(this).attr("data-dialog-title"),
                     buttons: {
-                        "Save": function () {
+                        "OK": function () {
                             $('#form0').submit();
                         },
                         "Cancel": function () {
@@ -93,7 +97,7 @@
                     },
                     close: function () {
                         $('#messages_about_list').removeClass('hide').addClass('alert alert-info').slideDown().show();
-                        $('#messages_list_content').html('<h4>Edit Dialog Closed</h4>');
+                        $('#messages_list_content').html('<h4>Dialog Closed</h4>');
                         $(this).remove();
                     },
                     modal: true

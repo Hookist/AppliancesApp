@@ -1,0 +1,57 @@
+﻿@model AppliancesApp.Models.DbModels.Appliance
+<html>
+<body>
+    <div class="Column">
+        <div id="messages_add_delete" class="hide" role="alert">
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <div id="messages_delete_content"></div>
+        </div>
+        @using (Ajax.BeginForm("DeleteAppliance", new AjaxOptions {OnSuccess = "OnDelete()", OnFailure = "OnFailure()" }))
+        {
+
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id, new { id = "Id" })
+            <div>
+                @Html.LabelFor(model => model.Name)
+                <p>@Html.EditorFor(model => model.Name, new { id = "Name" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Price)
+                <p>@Html.EditorFor(model => model.Price, new { id = "Price" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.CreateDate)
+                <p>@Html.EditorFor(model => model.CreateDate, new { id = "CreateDate", @class = "form-control" })</p>
+            </div>
+            @Html.HiddenFor(model => model.Description)
+            @Html.HiddenFor(model => model.IsInStock)
+            @Html.HiddenFor(model => model.Attachment)
+        }
+    </div>
+
+</body>
+</html>
+
+<script>
+
+    function OnDelete() {
+        $('#messages_add_delete').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
+        $('#messages_delete_content').html('<h4>Deleted</h4>');
+        showList();
+        $('#messages_add_delete').slideUp(1500, function () {
+        });
+    }
+
+    function OnFailure() {
+        $('#messages_add_delete').removeClass('hide').addClass('alert alert-info alert-dismissible').slideDown().show();
+        $('#messages_delete_content').html('<h4>Something wrong</h4>');
+        $('#messages_add_delete').slideUp(1500, function () {
+        });
+    }
+
+    $(function () {
+        $('#CreateDate').datetimepicker({
+            format: 'DD/MM/YYYY HH:mm:ss'
+        });
+    });
+</script>

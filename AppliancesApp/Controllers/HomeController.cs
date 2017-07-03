@@ -22,15 +22,25 @@ namespace AppliancesApp.Controllers
         {
             Appliance appl = db.Appliances.Find(id);
             List<ApplianceRestriction> restrictions = db.ApplianceRestrictions.ToList();
-            Dictionary<string, bool?> dict = new Dictionary<string, bool?>();
-            foreach(var restr in restrictions)
-            {
-                dict.Add(restr.Name, restr.IsHidden);
-            }
-            ViewBag.restricts = dict;
+            ViewBag.restricts = GetRestrictions();
             if (appl != null)
             {
                 return PartialView("Edit", appl);
+            }
+            return View("List");
+        }
+
+        public ActionResult Add()
+        {
+            return PartialView("Add", new Appliance());
+        }
+
+        public ActionResult Delete(int id)
+        {
+            Appliance appl = db.Appliances.Find(id);
+            if (appl != null)
+            {
+                return PartialView("Delete", appl);
             }
             return View("List");
         }
@@ -69,6 +79,33 @@ namespace AppliancesApp.Controllers
             db.Entry(appliance).State = EntityState.Modified;
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        public ActionResult AddAppliance(Appliance appliance)
+        {
+            db.Appliances.Add(appliance);
+            db.SaveChanges();
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteAppliance(Appliance appliance)
+        {
+            db.Appliances.Remove(db.Appliances.Where(p => p.Id == appliance.Id).First());
+            db.SaveChanges();
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        private Dictionary<string, bool?> GetRestrictions()
+        {
+            List<ApplianceRestriction> restrictions = db.ApplianceRestrictions.ToList();
+            Dictionary<string, bool?> dict = new Dictionary<string, bool?>();
+            foreach (var restr in restrictions)
+            {
+                dict.Add(restr.Name, restr.IsHidden);
+            }
+            return dict;
         }
     }
 }

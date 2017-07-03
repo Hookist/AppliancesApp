@@ -1,0 +1,64 @@
+﻿@model AppliancesApp.Models.DbModels.Appliance
+<html>
+<body>
+    <div class="Column">
+        <div id="messages_about_add" class="hide" role="alert">
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <div id="messages_add_content"></div>
+        </div>
+        @using (Ajax.BeginForm("AddAppliance", new AjaxOptions { OnSuccess = "OnSave();", OnFailure = "OnFailure()" }))
+        {
+
+            @Html.AntiForgeryToken()
+            <div>
+                @Html.LabelFor(model => model.Name)
+                <p>@Html.EditorFor(model => model.Name, new { id = "Name" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Price)
+                <p>@Html.EditorFor(model => model.Price, new { id = "Price" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.CreateDate)
+                <p>@Html.EditorFor(model => model.CreateDate, new { id = "CreateDate", @class = "form-control" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Description)
+                <p>@Html.EditorFor(model => model.Description, new { id = "Description" })</p>    
+            </div>
+            <div>
+                @Html.LabelFor(model => model.IsInStock)
+                <p>@Html.EditorFor(model => model.IsInStock, new { id = "IsInStock" })</p>
+            </div>
+            <div>
+                @Html.LabelFor(model => model.Attachment)
+                <p>@Html.EditorFor(model => model.Attachment, new { id = "Attachment" })</p>
+            </div>
+          }
+    </div>
+
+</body>
+</html>
+
+<script>
+
+    function OnSave() {
+        $('#messages_about_add').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
+        $('#messages_add_content').html('<h4>Added</h4>'); showList();
+        $('#messages_about_add').slideUp(1500, function () {
+        });
+    }
+
+    function OnFailure() {
+        $('#messages_about_add').removeClass('hide').addClass('alert alert-info alert-dismissible').slideDown().show();
+        $('#messages_add_content').html('<h4>Something wrong</h4>');
+        $('#messages_about_add').slideUp(1500, function () {
+        });
+    }
+
+    $(function () {
+        $('#CreateDate').datetimepicker({
+            format: 'DD/MM/YYYY HH:mm:ss'
+        });
+    });
+</script>
